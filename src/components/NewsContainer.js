@@ -2,25 +2,40 @@ import { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import "../style-components/NewsContainer.css";
+import Box from "@mui/material/Box";
 import axios from "axios";
 import Container from "@mui/material/Container";
 import StarOutlined from "@mui/icons-material/StarOutlined";
-import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 const NewsUrl =
   "https://newsapi.org/v2/top-headlines?country=us&apiKey=de14d65895ea493f8bcabcf84525fd84";
 
 const NewsContainer = () => {
+  const navigate = useNavigate();
   const [newsData, setNewsData] = useState([]);
   const [addFav, setAddFav] = useState([]);
+  const [favoriteIndexes, setFavoriteIndexes] = useState([]);
 
-  const addToBookmark = (newsData) => {
-    if (addFav.find((favs) => favs.author === newsData.author)) {
+  const addToBookmark = (newsData, index) => {
+    const foundNewsData = addFav.find(
+      (favs) => favs.author === newsData.author
+    );
+
+    if (foundNewsData !== undefined) {
       return;
     }
-
+    console.log("adding to fav");
+    console.log(newsData);
     const addedFav = [...addFav, newsData];
+    const updatedIndexes = [...favoriteIndexes, index];
 
     setAddFav(addedFav);
+    setFavoriteIndexes(updatedIndexes);
+  };
+
+  const goToBookmarks = () => {
+    navigate("/bookmarks", { state: { favs: addFav } });
   };
 
   useEffect(() => {
@@ -35,11 +50,26 @@ const NewsContainer = () => {
   return (
     <div c>
       <Container>
+        <Container>
+          <div
+            style={{ display: "flex", justifyContent: "space-between" }}
+            className="view-btn-container"
+          >
+            <Box sx={{ my: 2 }}>
+              <h3 className="latest">News</h3>
+            </Box>
+
+            <button className="view-btn" onClick={goToBookmarks}>
+              View All Bookmarks
+            </button>
+          </div>
+        </Container>
+        <div className="line"></div>
         <div>
           <div className="top-news">
-            {newsData.map((newsData) => {
+            {newsData.map((newsData, index) => {
               return (
-                <div>
+                <div key={index}>
                   <div>
                     <div>
                       <Card className="cards">
@@ -63,12 +93,17 @@ const NewsContainer = () => {
                                 Read Full Story
                               </a>
                               <div className="add-container">
-                                <StarOutlined className="star" />
+                                <StarOutlined
+                                  className={
+                                    favoriteIndexes.includes(index)
+                                      ? `star fav`
+                                      : `star`
+                                  }
+                                />
                                 <p
                                   className="add-to"
                                   onClick={() => {
-                                    addToBookmark(newsData);
-                                    console.log(addToBookmark(newsData));
+                                    addToBookmark(newsData, index);
                                   }}
                                 >
                                   Add to bookmarks
