@@ -1,10 +1,8 @@
-import { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import "../style-components/NewsContainer.css";
-import axios from "axios";
+import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import StarOutlined from "@mui/icons-material/StarOutlined";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -28,15 +26,34 @@ const BookmarkContainer = () => {
   return (
     <div>
       <Container>
+        <Container>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Box sx={{ my: 2 }}>
+              <h3 className="latest">All Bookmarks</h3>
+            </Box>
+
+            <Link to={"/"}>
+              <button
+                style={{
+                  padding: "20px",
+                  backgroundColor: "green",
+                  color: "white",
+                  border: "none",
+                }}
+                className="view-btn"
+              >
+                Go back home
+              </button>
+            </Link>
+          </div>
+        </Container>
+        <div className="line"></div>
         <div>
           <div className="top-news">
             {favs.map((newsData, index) => {
               return (
                 <div key={index}>
-                  <div>
-                    <Link to={"/"}>
-                      <button>Go back home</button>
-                    </Link>
+                  <div style={{ marginTop: "30px" }}>
                     <div>
                       <Card className="cards ">
                         <CardContent>

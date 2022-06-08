@@ -56,10 +56,18 @@ const NewsContainer = () => {
             className="view-btn-container"
           >
             <Box sx={{ my: 2 }}>
-              <h3 className="latest">News</h3>
+              <h3 className="latest">Latest News</h3>
             </Box>
 
-            <button className="view-btn" onClick={goToBookmarks}>
+            <button
+              style={{
+                backgroundColor: "green",
+                color: "white",
+                border: "none",
+              }}
+              className="view-btn"
+              onClick={goToBookmarks}
+            >
               View All Bookmarks
             </button>
           </div>
